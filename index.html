@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>معرض ملوك المملكة العربية السعودية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold-primary: #d4af37;
+      --gold-light: #f3e5ab;
+      --gold-dark: #aa8c2c;
+      --bg-dark: #070b12;
+      --card-bg: rgba(18, 25, 38, 0.85);
+      --card-border: rgba(212, 175, 55, 0.3);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 50% 20%, rgba(13, 30, 22, 0.6) 0%, transparent 70%),
+        radial-gradient(circle at 50% 100%, rgba(5, 10, 18, 0.9) 0%, #030508 100%);
+      color: #ffffff;
+      font-family: 'Tajawal', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2rem 1rem;
+      overflow-x: hidden;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    header h1 {
+      font-family: 'Amiri', serif;
+      font-size: 2.4rem;
+      color: var(--gold-primary);
+      text-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      color: #a0aec0;
+      font-size: 1rem;
+    }
+
+    /* المعرض الرئيسي */
+    .gallery-container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 0;
+    }
+
+    .kings-wall {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      gap: 12px;
+      padding: 20px 10px;
+      background: rgba(10, 15, 25, 0.6);
+      border-radius: 16px;
+      border: 1px solid var(--card-border);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+    }
+
+    .king-card {
+      flex: 1;
+      min-width: 110px;
+      max-width: 150px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.4) 100%);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 10px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .king-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: transparent;
+      transition: background 0.3s ease;
+    }
+
+    .king-card:hover, .king-card.active {
+      transform: translateY(-8px) scale(1.03);
+      border-color: var(--gold-primary);
+      box-shadow: 0 12px 25px rgba(212, 175, 55, 0.25);
+      background: linear-gradient(180deg, rgba(212, 175, 55, 0.15) 0%, rgba(10, 15, 25, 0.8) 100%);
+    }
+
+    .king-card:hover::before, .king-card.active::before {
+      background: var(--gold-primary);
+    }
+
+    .image-wrapper {
+      width: 100%;
+      height: 140px;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background-color: #1a202c;
+    }
+
+    .image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      transition: transform 0.5s ease;
+    }
+
+    .king-card:hover .image-wrapper img,
+    .king-card.active .image-wrapper img {
+      transform: scale(1.08);
+    }
+
+    .king-name {
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-align: center;
+      color: #e2e8f0;
+      line-height: 1.3;
+      transition: color 0.3s ease;
+    }
+
+    .king-card:hover .king-name,
+    .king-card.active .king-name {
+      color: var(--gold-light);
+    }
+
+    .emblem {
+      margin-top: 8px;
+      width: 20px;
+      height: 20px;
+      opacity: 0.4;
+      transition: opacity 0.3s ease;
+    }
+
+    .king-card:hover .emblem,
+    .king-card.active .emblem {
+      opacity: 0.9;
+    }
+
+    /* منطقة عرض المقولة الشهيرة */
+    .quote-display {
+      width: 100%;
+      max-width: 800px;
+      margin: 2rem auto 1rem;
+      min-height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .quote-card {
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--gold-primary);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(212, 175, 55, 0.1);
+      position: relative;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .quote-card::before {
+      content: '“';
+      font-family: 'Amiri', serif;
+      position: absolute;
+      top: -10px;
+      right: 20px;
+      font-size: 4rem;
+      color: var(--gold-primary);
+      opacity: 0.3;
+      line-height: 1;
+    }
+
+    .quote-card h2 {
+      font-family: 'Amiri', serif;
+      color: var(--gold-light);
+      font-size: 1.3rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .quote-text {
+      font-family: 'Amiri', serif;
+      font-size: 1.5rem;
+      line-height: 1.8;
+      color: #ffffff;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .quote-author {
+      font-size: 0.95rem;
+      color: var(--gold-primary);
+      font-weight: 500;
+    }
+
+    footer {
+      margin-top: auto;
+      padding-top: 2rem;
+      color: #718096;
+      font-size: 0.85rem;
+      text-align: center;
+    }
+
+    /* استجابة الشاشات الصغيرة */
+    @media (max-width: 768px) {
+      .kings-wall {
+        flex-wrap: wrap;
+      }
+      .king-card {
+        flex: 1 1 calc(33.33% - 12px);
+        max-width: none;
+      }
+      header h1 {
+        font-size: 1.8rem;
+      }
+      .quote-text {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>ملوك المملكة العربية السعودية</h1>
+    <p>مرر الماوس أو انقر على صورة الملك لعرض أشهر مقولاته</p>
+  </header>
+
+  <main class="gallery-container">
+    <div class="kings-wall" id="kingsWall">
+   
+      <!-- يتم توليد ملوك المعرض عبر JavaScript بالترتيب المطلوب -->
+    </div>
+
+    <div class="quote-display" id="quoteDisplay">
+      <!-- يتم استبدال المقولة تفاعلياً هنا -->
+    </div>
+  </main>
+
+  <footer>
+    <p>المملكة العربية السعودية - تاريخ وحضارة</p>
+  </footer>
+
+  <script>
+    // البيانات بالترتيب الموضح في الصورة (من اليسار إلى اليمين)
+    const kingsData = [
+      {
+        id: "salman",
+        name: "الملك سلمان بن عبد العزيز",
+        title: "خادم الحرمين الشريفين الملك سلمان بن عبد العزيز آل سعود",
+        quote: "هدفنا الأول أن تكون بلادنا نموذجاً ناجحاً ورائداً في العالم على كافة الأصعدة، وسأنعم معكم ببنائها.",
+        image: "images/salman.png"
+      },
+      {
+        id: "abdullah",
+        name: "الملك عبد الله بن عبد العزيز",
+        title: "الملك عبد الله بن عبد العزيز آل سعود (رحمه الله)",
+        quote: "لا تنسوني من دعائكم.. أعاهد الله ثم أعاهدكم أن أرى فيكم إلا نفسي، وأن أعمل جاهداً لرخائكم وخدمتكم.",
+        image:"images/abdallah.jpg"
+      },
+      {
+        id: "fahd",
+        name: "الملك فهد بن عبد العزيز",
+        title: "الملك فهد بن عبد العزيز آل سعود (رحمه الله)",
+        quote: "نحن لسنا معتدين، ولكننا نحمي ديارنا، ونذود عن حياض بلادنا بكافة الإمكانيات المتاحة.",
+        image: "images/fahad.png"
+      },
+      {
+        id: "abdulaziz",
+        name: "الملك عبد العزيز آل سعود",
+        title: "الملك المؤسس عبد العزيز بن عبد الرحمن آل سعود (رحمه الله)",
+        quote: "بِفَضْلِ اللهِ ثُمَّ بِعَزِيمَةِ أَبْنَائِنَا وَبَنَاتِنَا، سَنَبْنِي مُسْتَقْبَلًا زَاهِرًا لِوَطَنِنَا",
+        image: "images/abdualaziz.jpg"
+      },
+      {
+        id: "khalid",
+        name: "الملك خالد بن عبد العزيز",
+        title: "الملك خالد بن عبد العزيز آل سعود (رحمه الله)",
+        quote: "حرصنا الدائم على بناء المواطن السعودي وتزويده بالتعليم والمعرفة هو أساس نهضة هذا الوطن.",
+        image: "images/Khalid.jpg"
+      },
+      {
+        id: "faisal",
+        name: "الملك فيصل بن عبد العزيز",
+        title: "الملك فيصل بن عبد العزيز آل سعود (رحمه الله)",
+        quote: "عشنا وعاش أجدادنا على التمر واللبن، وسنعود إليهما إذا دعت الحاجة لحماية كرامتنا وسيادتنا.",
+        image: "images/faisal.jpg"
+      },
+      {
+        id: "saud",
+        name: "الملك سعود بن عبد العزيز",
+        title: "الملك سعود بن عبد العزيز آل سعود (رحمه الله)",
+        quote: "إن العلم والتعليم هما الحجر الأساسي الذي نعتمد عليه في بناء أمتنا وإعلاء شأنها.",
+        image: "images/saud.png"
+      }
+    ];
+
+    const wallElement = document.getElementById('kingsWall');
+    const quoteDisplay = document.getElementById('quoteDisplay');
+
+    // إنشاء بطاقات الملوك
+    kingsData.forEach((king, index) => {
+      const card = document.createElement('div');
+      card.className = `king-card ${index === 3 ? 'active' : ''}`;
+      card.setAttribute('data-id', king.id);
+
+      card.innerHTML = `
+        <div class="image-wrapper">
+          <img src="${king.image}" alt="${king.name}" loading="lazy">
+        </div>
+        <div class="king-name">${king.name}</div>
+        <svg class="emblem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2L15 8L21 9L17 14L18 20L12 17L6 20L7 14L3 9L9 8L12 2Z" fill="var(--gold-primary)"/>
+        </svg>
+      `;
+
+      // أحداث الماوس والنقر
+      card.addEventListener('mouseenter', () => activateKing(king, card));
+      card.addEventListener('click', () => activateKing(king, card));
+
+      wallElement.appendChild(card);
+    });
+
+    // إظهار مقولة الملك المحدد
+    function activateKing(king, cardElement) {
+      document.querySelectorAll('.king-card').forEach(c => c.classList.remove('active'));
+      cardElement.classList.add('active');
+
+      quoteDisplay.innerHTML = `
+        <div class="quote-card">
+          <h2>${king.title}</h2>
+          <p class="quote-text">"${king.quote}"</p>
+          <div class="quote-author">مقولة شهيرة</div>
+        </div>
+      `;
+    }
+
+    // تفعيل الملك عبد العزيز عند التحميل الأولي
+    activateKing(kingsData[3], wallElement.children[3]);
+  </script>
+</body>
+
+</html>
